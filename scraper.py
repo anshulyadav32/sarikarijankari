@@ -122,25 +122,24 @@ def scrape_post_details(post_url):
     return data
 
 def main():
-    all_data = {}
+    flat_data = []
     
     for cat_name, path in CATEGORIES.items():
         items = scrape_category(cat_name, path)
         print(f"Found {len(items)} items in {cat_name}")
         
-        scraped_items = []
         for item in items:
             details = scrape_post_details(item['url'])
             if details:
-                scraped_items.append(details)
-            time.sleep(0.5) # Reduced sleep but still present
+                # Add category info to each item
+                details['category'] = cat_name
+                flat_data.append(details)
+            time.sleep(0.5)
             
-        all_data[cat_name] = scraped_items
-
     with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(all_data, f, ensure_ascii=False, indent=4)
+        json.dump(flat_data, f, ensure_ascii=False, indent=4)
     
-    print("Scraping complete. Data saved to data.json")
+    print(f"Scraping complete. {len(flat_data)} total items saved to data.json")
 
 if __name__ == "__main__":
     main()
