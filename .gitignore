@@ -10,3 +10,4 @@ backend/prisma/dev.db
 backend/.env
 frontend/.env
 backend/uploads
+.venv/
